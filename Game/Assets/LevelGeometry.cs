@@ -44,6 +44,13 @@ public class LevelGeometry : MonoBehaviour
                 surfaceIndices.Add(quadStart + 2);
                 surfaceIndices.Add(quadStart + 3);
 
+                surfaceIndices.Add(quadStart);
+                surfaceIndices.Add(quadStart + 2);
+                surfaceIndices.Add(quadStart + 1);
+                surfaceIndices.Add(quadStart);
+                surfaceIndices.Add(quadStart + 3);
+                surfaceIndices.Add(quadStart + 2);
+
                 // TODO WT: Add wireframe indices.
                 wireframeIndices.Add(quadStart);
                 wireframeIndices.Add(quadStart + 1);

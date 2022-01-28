@@ -8,7 +8,8 @@ Shader "Unlit/WireframeShader"
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
-		ZTest Off
+		//ZTest Equal
+		//Offset -1, -1
 
         Pass
         {
@@ -36,6 +37,7 @@ Shader "Unlit/WireframeShader"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
+				o.vertex.z += 0.01;
                 return o;
             }
 
