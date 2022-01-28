@@ -45,16 +45,22 @@ public class LevelGeometry : MonoBehaviour
                 surfaceIndices.Add(quadStart + 3);
 
                 // TODO WT: Add wireframe indices.
-                wireframeIndices.Add()
+                wireframeIndices.Add(quadStart);
+                wireframeIndices.Add(quadStart + 1);
+                wireframeIndices.Add(quadStart + 2);
+                wireframeIndices.Add(quadStart + 3);
+                wireframeIndices.Add(quadStart);
 
                 quadStart += 4;
             }
         }
 
+        mesh.subMeshCount = 2;
         mesh.SetVertices(vertices);
         mesh.SetIndices(surfaceIndices, MeshTopology.Triangles, 0);
-        mesh.SetIndices(surfaceIndices, MeshTopology.Lines, 0);
-        mesh.RecalculateNormals();
+        mesh.SetIndices(wireframeIndices, MeshTopology.Lines, 1);
+        Debug.Log(mesh.subMeshCount);
+        //mesh.RecalculateNormals();
 
         _meshFilter.mesh = mesh;
     }
