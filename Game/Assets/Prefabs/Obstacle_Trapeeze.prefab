@@ -54,6 +54,14 @@ PrefabInstance:
       propertyPath: baseWidth
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3778822061943145502, guid: cd7edcd060f8f0e4dbedbc0b074abe96, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4643506063457930090, guid: cd7edcd060f8f0e4dbedbc0b074abe96, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7265494404396117755, guid: cd7edcd060f8f0e4dbedbc0b074abe96, type: 3}
       propertyPath: m_RootOrder
       value: 0

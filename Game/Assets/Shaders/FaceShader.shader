@@ -6,9 +6,11 @@ Shader "Unlit/FaceShader"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" }
         LOD 100
 		//ZTest Equal
+
+		//ZWrite Off
 		//Offset -1, -1
 
         Pass
