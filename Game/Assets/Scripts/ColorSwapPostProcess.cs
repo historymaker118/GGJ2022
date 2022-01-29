@@ -21,6 +21,11 @@ public class ColorSwapPostProcess : MonoBehaviour
 
     private void Start()
     {
+        mat = new Material(shader);
+
+        mat.SetColor("_ColorA", mainColor);
+        mat.SetColor("_ColorB", lineworkColor);
+        mat.SetFloat("_CrossFade", crossfade);
     }
 
     private void OnValidate()
