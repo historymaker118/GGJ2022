@@ -81,6 +81,22 @@ public class LevelGeometry : MonoBehaviour
                         Quaternion.AngleAxis(Mathf.Rad2Deg * faceAngle, Vector3.forward)
                     );
                 }
+
+                key = outside[face];
+                if (mappedMapData.ContainsKey(key))
+                {
+                    var prefab = mappedMapData[key];
+
+                    var o = Instantiate(
+                        prefab,
+                        new Vector3(
+                            Mathf.Cos(faceAngle) * adjustedRadius,
+                            Mathf.Sin(faceAngle) * adjustedRadius,
+                            line * ringDepth + (ringDepth / 2.0f)
+                        ),
+                        Quaternion.AngleAxis(Mathf.Rad2Deg * (faceAngle + Mathf.PI), Vector3.forward)
+                    );
+                }
             }
 
         }

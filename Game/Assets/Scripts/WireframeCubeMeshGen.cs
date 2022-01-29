@@ -32,11 +32,13 @@ public class WireframeCubeMeshGen : MonoBehaviour
         var faceIndices = new List<int>();
         var wireframeIndices = new List<int>();
 
+        float baseTinyOffset = 0.1f;
+
         AddQuad(new Vector3[]{
-            new Vector3(-baseWidth / 2, 0, -depth / 2),
+            new Vector3(-baseWidth / 2, baseTinyOffset, -depth / 2),
             new Vector3(-topWidth / 2, height, -depth / 2),
             new Vector3(topWidth / 2, height, -depth / 2),
-            new Vector3(baseWidth / 2, 0, -depth / 2)
+            new Vector3(baseWidth / 2, baseTinyOffset, -depth / 2)
         }, verts, faceIndices, wireframeIndices);
 
         AddQuad(new Vector3[]{
@@ -47,17 +49,17 @@ public class WireframeCubeMeshGen : MonoBehaviour
         }, verts, faceIndices, wireframeIndices);
 
         AddQuad(new Vector3[]{
-            new Vector3(baseWidth / 2, 0, -depth / 2),
+            new Vector3(baseWidth / 2, baseTinyOffset, -depth / 2),
             new Vector3(topWidth / 2, height, -depth / 2),
             new Vector3(topWidth / 2, height, depth / 2),
-            new Vector3(baseWidth / 2, 0, depth / 2)
+            new Vector3(baseWidth / 2, baseTinyOffset, depth / 2)
         }, verts, faceIndices, wireframeIndices);
 
         AddQuad(new Vector3[]{
-            new Vector3(-baseWidth / 2, 0, depth / 2),
+            new Vector3(-baseWidth / 2, baseTinyOffset, depth / 2),
             new Vector3(-topWidth / 2, height, depth / 2),
             new Vector3(-topWidth / 2, height, -depth / 2),
-            new Vector3(-baseWidth / 2, 0, -depth / 2)
+            new Vector3(-baseWidth / 2, baseTinyOffset, -depth / 2)
         }, verts, faceIndices, wireframeIndices);
 
 

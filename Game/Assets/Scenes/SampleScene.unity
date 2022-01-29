@@ -211,6 +211,8 @@ MonoBehaviour:
     value: {fileID: 4123997368970013233, guid: a6f85c013f7b30346bbd0d73b1da97c4, type: 3}
   - key: 76
     value: {fileID: 2354050768720068986, guid: f4aa6ff0bb3f6ee4992bf50121ff3214, type: 3}
+  - key: 80
+    value: {fileID: 5012257989409854365, guid: 78184e7cbb7f02e448179c1f69df40e0, type: 3}
   levelTextFile: {fileID: 4900000, guid: 3b3808cfc18de7541b0fb55e8e7d2b2b, type: 3}
 --- !u!4 &162800484
 Transform:
@@ -226,6 +228,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &179725119
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 3
+  m_Width: 320
+  m_Height: 180
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 1
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 0
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &210060705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1485,7 +1523,7 @@ MonoBehaviour:
   turnSpeed: 4
   playerX: 0
   playerZ: 2
-  shipOffset: 0.75
+  shipOffset: 1
   sides: 6
   rings: 512
   ringDepth: 8
