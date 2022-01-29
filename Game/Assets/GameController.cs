@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        levelGeometry.GenerateTubeMesh(sides, rings, ringDepth, radius);
+        levelGeometry.Generate(sides, rings, ringDepth, radius);
     }
 
     // Update is called once per frame
@@ -71,6 +71,8 @@ public class GameController : MonoBehaviour
         //}
 
         // if moving left, offset camera left a bit more, vice versa.
+
+        // TODO WT: Camera shake?
 
         newPos = new Vector3(Mathf.Sin(playerX) * (offset + camYOffset * offsetDirection), -Mathf.Cos(playerX) * (offset + camYOffset * offsetDirection), player.transform.position.z - camXOffset);
 
