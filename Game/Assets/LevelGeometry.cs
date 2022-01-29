@@ -7,14 +7,14 @@ public class LevelGeometry : MonoBehaviour
     public MeshRenderer _meshRenderer;
     public MeshFilter _meshFilter;
 
-    public int sides = 6;
-    public int rings = 32;
+    //public int sides = 6;
+    //public int rings = 32;
 
-    public float ringDepth = 8.0f;
-    public float radius = 3.0f;
+    //public float ringDepth = 8.0f;
+    //public float radius = 3.0f;
 
     // Start is called before the first frame update
-    void Start()
+    public void GenerateTubeMesh(int sides, int rings, float ringDepth, float radius)
     {
         var mesh = new Mesh();
 
@@ -66,8 +66,6 @@ public class LevelGeometry : MonoBehaviour
         mesh.SetVertices(vertices);
         mesh.SetIndices(surfaceIndices, MeshTopology.Triangles, 0);
         mesh.SetIndices(wireframeIndices, MeshTopology.Lines, 1);
-        Debug.Log(mesh.subMeshCount);
-        //mesh.RecalculateNormals();
 
         _meshFilter.mesh = mesh;
     }
