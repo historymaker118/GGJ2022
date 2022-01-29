@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
     public LevelGeometry levelGeometry;
     public Transform player;
 
-    public Transform camera;
+    new public Transform camera;
 
     public ColorSwapPostProcess colorSwap;
 

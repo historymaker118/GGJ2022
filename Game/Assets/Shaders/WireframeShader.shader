@@ -38,11 +38,11 @@ Shader "Unlit/WireframeShader"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
-				if (UNITY_REVERSED_Z) {
-					o.vertex.z = o.vertex.z - 0.01;
-				} else {
+				#ifdef UNITY_REVERSED_Z
 					o.vertex.z = o.vertex.z + 0.01;
-				}
+				#else
+					o.vertex.z = o.vertex.z - 0.01;
+				#endif
 
                 return o;
             }
