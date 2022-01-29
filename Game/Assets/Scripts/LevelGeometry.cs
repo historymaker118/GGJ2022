@@ -21,7 +21,12 @@ public class LevelGeometry : MonoBehaviour
 
     //public GameObject box;
 
-    private void OnValidate()
+    private void Start()
+    {
+        ConvertMapDataToDictionary();
+    }
+
+    private void ConvertMapDataToDictionary()
     {
         mappedMapData = new Dictionary<char, GameObject>();
         for (int i = 0; i < mapData.Length; i++)
@@ -57,7 +62,7 @@ public class LevelGeometry : MonoBehaviour
                 var key = inside[face];
                 if (mappedMapData.ContainsKey(key))
                 {
-                    var prefab = mappedMapData[inside[face]];
+                    var prefab = mappedMapData[key];
 
                     var o = Instantiate(
                         prefab,

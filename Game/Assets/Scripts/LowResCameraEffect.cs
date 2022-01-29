@@ -10,7 +10,7 @@ public class LowResCameraEffect : MonoBehaviour
 
     public UnityEngine.UI.RawImage finalImage;
 
-    private void OnValidate()
+    private void Start()
     {
         cam = GetComponent<Camera>();
 
