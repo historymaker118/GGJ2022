@@ -26,6 +26,11 @@ public class LevelGeometry : MonoBehaviour
         ConvertMapDataToDictionary();
     }
 
+    //private void OnValidate()
+    //{
+    //    ConvertMapDataToDictionary();
+    //}
+
     private void ConvertMapDataToDictionary()
     {
         mappedMapData = new Dictionary<char, GameObject>();
@@ -49,6 +54,8 @@ public class LevelGeometry : MonoBehaviour
         
         var angle = 2 * Mathf.PI / sides;
 
+        var adjustedRadius = radius * Mathf.Cos(angle / 2);
+
         for (int line = 0; line < ringText.Length; line++)
         {
             var sections = ringText[line].Split(' ');
@@ -67,8 +74,8 @@ public class LevelGeometry : MonoBehaviour
                     var o = Instantiate(
                         prefab,
                         new Vector3(
-                            Mathf.Cos(faceAngle) * radius,
-                            Mathf.Sin(faceAngle) * radius,
+                            Mathf.Cos(faceAngle) * adjustedRadius,
+                            Mathf.Sin(faceAngle) * adjustedRadius,
                             line * ringDepth + (ringDepth / 2.0f)
                         ),
                         Quaternion.AngleAxis(Mathf.Rad2Deg * faceAngle, Vector3.forward)
@@ -126,7 +133,10 @@ public class LevelGeometry : MonoBehaviour
                 // TODO WT: Add wireframe indices.
                 wireframeIndices.Add(quadStart);
                 wireframeIndices.Add(quadStart + 1);
+                wireframeIndices.Add(quadStart + 1);
                 wireframeIndices.Add(quadStart + 2);
+                wireframeIndices.Add(quadStart + 2);
+                wireframeIndices.Add(quadStart + 3);
                 wireframeIndices.Add(quadStart + 3);
                 wireframeIndices.Add(quadStart);
 
