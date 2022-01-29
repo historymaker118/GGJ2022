@@ -2,12 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct ObstacleMapData
+{
+    public char key;
+    public GameObject value;
+}
+
 public class LevelGeometry : MonoBehaviour
 {
     public MeshRenderer _meshRenderer;
     public MeshFilter _meshFilter;
 
-    public GameObject box;
+    public ObstacleMapData[] mapData;
+    private Dictionary<char, GameObject> mappedMapData;
+
+    public TextAsset levelTextFile;
+
+    //public GameObject box;
+
+    private void OnValidate()
+    {
+        mappedMapData = new Dictionary<char, GameObject>();
+        for (int i = 0; i < mapData.Length; i++)
+        {
+            mappedMapData[mapData[i].key] = mapData[i].value;
+        }
+    }
 
     public void Generate(int sides, int rings, float ringDepth, float radius)
     {
@@ -17,80 +38,15 @@ public class LevelGeometry : MonoBehaviour
 
     public void GenerateObstacles(int sides, int rings, float ringDepth, float radius)
     {
-        var txt =
-@"
-B_____ ______
-_B____ ______
-__B___ ______
-___B__ ______
-____B_ ______
-_____B ______
-B_____ ______
-_B____ ______
-__B___ ______
-___B__ ______
-____B_ ______
-_____B ______
-B_____ ______
-_B____ ______
-__B___ ______
-___B__ ______
-____B_ ______
-_____B ______
-B_____ ______
-_B____ ______
-__B___ ______
-___B__ ______
-____B_ ______
-_____B ______
-B_____ ______
-_B____ ______
-__B___ ______
-___B__ ______
-____B_ ______
-_____B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-B__B__ ______
-_B__B_ ______
-__B__B ______
-______ ______
-";
-        var ringText = txt.Trim().Split('\n');
+        var txt = levelTextFile.text;
 
-        Debug.Log("ringText: " + ringText.ToString());
+        var ringText = txt.Trim().Split('\n');
         
         var angle = 2 * Mathf.PI / sides;
 
         for (int line = 0; line < ringText.Length; line++)
         {
             var sections = ringText[line].Split(' ');
-            Debug.Log("sections: " + sections[0]);
 
             var inside = sections[0];
             var outside = sections[1];
@@ -98,22 +54,20 @@ ______ ______
             for (int face = 0; face < sides; face++)
             {
                 var faceAngle = angle * face + angle / 2.0f;
-                switch (inside[face])
+                var key = inside[face];
+                if (mappedMapData.ContainsKey(key))
                 {
-                    case 'B':
-                        var o = Instantiate(
-                            box,
-                            new Vector3(
-                                Mathf.Cos(faceAngle) * radius,
-                                Mathf.Sin(faceAngle) * radius,
-                                line * ringDepth + (ringDepth / 2.0f)
-                            ),
-                            Quaternion.AngleAxis(Mathf.Rad2Deg * faceAngle, Vector3.forward)
-                        );
-                        break;
-                    case '_':
-                    default:
-                        break;
+                    var prefab = mappedMapData[inside[face]];
+
+                    var o = Instantiate(
+                        prefab,
+                        new Vector3(
+                            Mathf.Cos(faceAngle) * radius,
+                            Mathf.Sin(faceAngle) * radius,
+                            line * ringDepth + (ringDepth / 2.0f)
+                        ),
+                        Quaternion.AngleAxis(Mathf.Rad2Deg * faceAngle, Vector3.forward)
+                    );
                 }
             }
 
