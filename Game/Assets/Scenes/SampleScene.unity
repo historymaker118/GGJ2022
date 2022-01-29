@@ -439,14 +439,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19ff1a06a8e2aa34fbcf07b5397d192b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 958ac63a5e027e84b93a995932e349d6, type: 3}
-  mainColor: {r: 0.375445, g: 0.47234395, b: 0.5566038, a: 1}
-  lineworkColor: {r: 0.7714489, g: 0.8301887, b: 0.8019444, a: 1}
+  mainColor: {r: 0.48401722, g: 0.3764706, b: 0.5568628, a: 1}
+  lineworkColor: {r: 0.5514863, g: 0.764151, b: 0.6157186, a: 1}
 --- !u!1 &1946739960
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +548,7 @@ GameObject:
   - component: {fileID: 2074530999}
   - component: {fileID: 2074530998}
   - component: {fileID: 2074530997}
+  - component: {fileID: 2074531001}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -625,9 +626,21 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074530996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.25, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.12412, z: 1.77438}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1946739961}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2074531001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074530996}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 795a56926a63ee641b1439761d02892f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

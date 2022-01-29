@@ -14,10 +14,10 @@ public class ColorSwapPostProcess : MonoBehaviour
 
     private void Start()
     {
+        mat = new Material(shader);
+
         mat.SetColor("_MainColor", mainColor);
         mat.SetColor("_LineworkColor", lineworkColor);
-
-        mat = new Material(shader);
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
