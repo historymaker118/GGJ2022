@@ -1,52 +1,54 @@
-Shader "Unlit/WireframeShader"
+Shader "Hidden/ColorSwap"
 {
     Properties
     {
-        _Color ("Texture", Color) = (1.0, 1.0, 1.0, 1.0)
+		_MainTex ("Texture", 2D) = "white" {}
+        _MainColor ("Texture", Color) = (0.1, 0.1, 0.1, 1.0)
+        _LineworkColor ("Texture", Color) = (0.1, 0.7, 0.9, 1.0)
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
-		//ZTest Equal
-		//Offset -1, -1
+        // No culling or depth
+        Cull Off ZWrite Off ZTest Always
 
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
             struct appdata
             {
                 float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
+                float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };
-
-            float4 _Color;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-				o.vertex.z = o.vertex.z + 0.01;
+                o.uv = v.uv;
                 return o;
             }
 
+			sampler2D _MainTex;
+
+			float4 _MainColor;
+			float4 _LineworkColor;
+
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = _Color;
-                // apply fog
-                //UNITY_APPLY_FOG(i.fogCoord, col);
+                fixed4 col = lerp(_MainColor, _LineworkColor, tex2D(_MainTex, i.uv).r);
+                // just invert the colors
+                // col.rgb = 1 - col.rgb;
                 return col;
             }
             ENDCG
