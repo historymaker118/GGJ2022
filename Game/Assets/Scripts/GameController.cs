@@ -13,7 +13,10 @@ public class GameController : MonoBehaviour
 
     public bool isInside = true;
 
-    public float moveSpeed = 12.0f;
+    public float moveSpeed = 10.0f;
+    public float acceleration = 0.1f;
+    public float minSpeed = 10.0f;
+    public float maxSpeed = 20.0f;
     public float turnSpeed = 4.0f;
 
     public float playerX = 0; // technically an angle
@@ -37,6 +40,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		moveSpeed = minSpeed;
         levelGeometry.Generate(sides, rings, ringDepth, radius);
     }
 
@@ -61,6 +65,7 @@ public class GameController : MonoBehaviour
     public void HandlePlayerHitSomething()
     {
         Debug.Log("Player Hit Something, Restarting");
+        moveSpeed = minSpeed;
         playerZ = 0;
     }
 
@@ -91,6 +96,10 @@ public class GameController : MonoBehaviour
         }
 
         playerZ = playerZ + moveSpeed * Time.deltaTime;
+        moveSpeed += acceleration * Time.deltaTime;
+        if (moveSpeed > maxSpeed){
+			moveSpeed = maxSpeed;
+		}
 
         var offsetDirection = (isInside) ? -1 : 1;
 
