@@ -48,6 +48,14 @@ public class WireframeCubeMeshGen : MonoBehaviour
             new Vector3(topWidth / 2, height, -depth / 2),
         }, verts, faceIndices, wireframeIndices);
 
+
+        AddQuad(new Vector3[]{
+            new Vector3(-baseWidth / 2, baseTinyOffset, -depth / 2),
+            new Vector3(baseWidth / 2, baseTinyOffset, -depth / 2),
+            new Vector3(baseWidth / 2, baseTinyOffset, depth / 2),
+            new Vector3(-baseWidth / 2, baseTinyOffset, depth / 2),
+        }, verts, faceIndices, wireframeIndices);
+
         AddQuad(new Vector3[]{
             new Vector3(baseWidth / 2, baseTinyOffset, -depth / 2),
             new Vector3(topWidth / 2, height, -depth / 2),
