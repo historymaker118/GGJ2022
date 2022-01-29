@@ -25,8 +25,8 @@ public class GameController : MonoBehaviour
     public float ringDepth = 8.0f;
     public float radius = 3.0f;
 
-    public float camOffset = 10.0f;
-    public float camRadiusOutside = 0.0f;
+    public float camXOffset = 10.0f;
+    public float camYOffset = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +51,9 @@ public class GameController : MonoBehaviour
 
         playerZ = playerZ + moveSpeed * Time.deltaTime;
 
-        var offset = radius + ((isInside) ? -1 : 1 ) * shipOffset;
+        var offsetDirection = (isInside) ? -1 : 1;
+
+        var offset = radius + (offsetDirection * shipOffset);
 
         // TODO WT: Keep player offset from surface of hexagon.
         player.transform.position = Vector3.Lerp(player.transform.position, new Vector3(Mathf.Sin(playerX) * offset, -Mathf.Cos(playerX) * offset, playerZ), Time.deltaTime * 20.0f);
@@ -60,13 +62,17 @@ public class GameController : MonoBehaviour
         player.transform.rotation = Quaternion.AngleAxis(Mathf.Rad2Deg * playerX, Vector3.forward);
 
         Vector3 newPos;
-        if (isInside)
-        {
-            newPos = new Vector3(0.0f, 0.0f, player.transform.position.z - camOffset);
-        } else
-        {
-            newPos = new Vector3(Mathf.Sin(playerX) * (offset + camRadiusOutside), -Mathf.Cos(playerX) * (offset + camRadiusOutside), player.transform.position.z - camOffset);
-        }
+        // ! Not really too bothered about having the camera centererd when inside, this way we'll get some nice camera movement
+        //if (isInside)
+        //{
+        //    newPos = new Vector3(0.0f, 0.0f, player.transform.position.z - camOffset);
+        //} else
+        //{
+        //}
+
+        // if moving left, offset camera left a bit more, vice versa.
+
+        newPos = new Vector3(Mathf.Sin(playerX) * (offset + camYOffset * offsetDirection), -Mathf.Cos(playerX) * (offset + camYOffset * offsetDirection), player.transform.position.z - camXOffset);
 
         camera.transform.position = Vector3.Lerp(camera.transform.position, newPos, Time.deltaTime * 10.0f);
         camera.transform.rotation = player.transform.rotation;
