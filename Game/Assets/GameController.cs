@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
 
     public Transform camera;
 
+    public ColorSwapPostProcess colorSwap;
+
     public bool isInside = true;
 
     public float moveSpeed = 12.0f;
@@ -28,10 +30,32 @@ public class GameController : MonoBehaviour
     public float camXOffset = 10.0f;
     public float camYOffset = 0.0f;
 
+    Coroutine tween;
+
+    float currentCrossfade = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
         levelGeometry.Generate(sides, rings, ringDepth, radius);
+    }
+
+    IEnumerator TweenForCamera(float from, float to)
+    {
+        var tweenTime = 0.3f;
+        var startTime = Time.time;
+        var endTime = startTime + tweenTime;
+
+        while (Time.time < endTime)
+        {
+            yield return new WaitForEndOfFrame();
+
+            currentCrossfade = Mathf.Clamp01((endTime - Time.time) / tweenTime);
+
+            colorSwap.setCrossfade(Mathf.Lerp(from, to, 1.0f - currentCrossfade));
+        }
+
+        tween = null;
     }
 
     // Update is called once per frame
@@ -42,11 +66,22 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             isInside = false;
+            if (tween != null)
+            {
+                StopCoroutine(tween);
+            }
+
+            StartCoroutine(TweenForCamera(0.0f, 1.0f));
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
             isInside = true;
+            if (tween != null)
+            {
+                StopCoroutine(tween);
+            }
+            StartCoroutine(TweenForCamera(1.0f, 0.0f));
         }
 
         playerZ = playerZ + moveSpeed * Time.deltaTime;

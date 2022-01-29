@@ -9,15 +9,27 @@ public class ColorSwapPostProcess : MonoBehaviour
 
     public Color mainColor;
     public Color lineworkColor;
+    [Range(0.0f, 1.0f)]
+    public float crossfade;
 
     private Material mat;
 
+    public void setCrossfade(float crossfade)
+    {
+        mat.SetFloat("_CrossFade", crossfade);
+    }
+
     private void Start()
+    {
+    }
+
+    private void OnValidate()
     {
         mat = new Material(shader);
 
-        mat.SetColor("_MainColor", mainColor);
-        mat.SetColor("_LineworkColor", lineworkColor);
+        mat.SetColor("_ColorA", mainColor);
+        mat.SetColor("_ColorB", lineworkColor);
+        mat.SetFloat("_CrossFade", crossfade);
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)

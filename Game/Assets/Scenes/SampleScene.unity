@@ -447,6 +447,7 @@ MonoBehaviour:
   shader: {fileID: 4800000, guid: 958ac63a5e027e84b93a995932e349d6, type: 3}
   mainColor: {r: 0.48401722, g: 0.3764706, b: 0.5568628, a: 1}
   lineworkColor: {r: 0.5514863, g: 0.764151, b: 0.6157186, a: 1}
+  crossfade: 0
 --- !u!1 &1946739960
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +511,7 @@ MonoBehaviour:
   levelGeometry: {fileID: 162800483}
   player: {fileID: 876471716}
   camera: {fileID: 963194228}
+  colorSwap: {fileID: 963194229}
   isInside: 1
   moveSpeed: 18
   turnSpeed: 4
