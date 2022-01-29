@@ -6,17 +6,29 @@ using TMPro;
 public class GUI : MonoBehaviour
 {
 	public TextMeshProUGUI distanceText;
+	public TextMeshProUGUI bestDistanceText;
 	public Transform player;
 
-    // Start is called before the first frame update
+	private float bestDistance = 0f;
+	private float currentDistance = 0f;
+	private float playerDistance = 0f;
+
     void Start()
     {
+		bestDistanceText.text = "Best: " + bestDistance.ToString("0") + "m";
         distanceText.text = "Starting...";
+        bestDistance = 0f;
+        currentDistance = 0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        distanceText.text = "Distance: " + player.position.z.ToString("0");
+		playerDistance = player.position.z;
+		if (currentDistance > bestDistance){
+			bestDistance = currentDistance;
+		}
+		currentDistance = playerDistance;
+        distanceText.text = "Distance: " + currentDistance.ToString("0") + "m";
+        bestDistanceText.text = "Best: " + bestDistance.ToString("0") + "m";
     }
 }
