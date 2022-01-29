@@ -63,6 +63,5 @@ public class GUI : MonoBehaviour
 		if (currentDistance > milestoneGap * 8f){
 			Bass.volume = 1f;
 		}
-        
     }
 }
