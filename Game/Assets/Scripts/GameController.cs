@@ -58,6 +58,12 @@ public class GameController : MonoBehaviour
         tween = null;
     }
 
+    public void HandlePlayerHitSomething()
+    {
+        Debug.Log("Player Hit Something, Restarting");
+        playerZ = 0;
+    }
+
     // Update is called once per frame
     void Update()
     {
