@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct TweenParams
+{
+    public float colorCrossfade;
+    public float playerY;
+    public float cameraY;
+    public float cameraZ;
+    public float cameraPitch;
+    public bool isInside;
+}
+
 public class GameController : MonoBehaviour
 {
     public LevelGeometry levelGeometry;
@@ -10,8 +21,6 @@ public class GameController : MonoBehaviour
     new public Transform camera;
 
     public ColorSwapPostProcess colorSwap;
-
-    public bool isInside = true;
 
     public float moveSpeed = 10.0f;
     public float acceleration = 0.1f;
@@ -22,7 +31,27 @@ public class GameController : MonoBehaviour
     public float playerX = 0; // technically an angle
     public float playerZ = 0;
 
-    public float shipOffset = 0.75f;
+    public TweenParams currentParams;
+
+    public TweenParams insideTweenTarget = new TweenParams
+    {
+        colorCrossfade = 0.0f,
+        playerY = -1.0f,
+        cameraY = 1.5f,
+        cameraZ = -2.0f,
+        cameraPitch = 0.0f,
+        isInside = true,
+    };
+
+    public TweenParams outsideTweenTarget = new TweenParams
+    {
+        colorCrossfade = 1.0f,
+        playerY = 0.5f,
+        cameraY = 1.9f,
+        cameraZ = -2.0f,
+        cameraPitch = -30.0f,
+        isInside = false,
+    };
 
     public int sides = 6;
     public int rings = 32;
@@ -30,35 +59,44 @@ public class GameController : MonoBehaviour
     public float ringDepth = 8.0f;
     public float radius = 3.0f;
 
-    public float camXOffset = 10.0f;
-    public float camYOffset = 0.0f;
-    public float camYOffsetOutside = 0.0f;
-
     Coroutine tween;
-
-    float currentCrossfade = 0.0f;
 
     // Start is called before the first frame update
     void Start()
     {
 		moveSpeed = minSpeed;
         levelGeometry.Generate(sides, rings, ringDepth, radius);
+
+        currentParams = insideTweenTarget;
+        colorSwap.setCrossfade(insideTweenTarget.colorCrossfade);
     }
 
-    IEnumerator TweenForCamera(float from, float to)
+    IEnumerator TweenToOutside(float duration, TweenParams tweenParams)
     {
-        var tweenTime = 0.3f;
         var startTime = Time.time;
-        var endTime = startTime + tweenTime;
-
+        var endTime = startTime + duration;
+        
+        var startParams = currentParams;
+        
         while (Time.time < endTime)
         {
             yield return new WaitForEndOfFrame();
+            var alpha = 1.0f - Mathf.Clamp01((endTime - Time.time) / duration);
 
-            currentCrossfade = Mathf.Clamp01((endTime - Time.time) / tweenTime);
+            currentParams = new TweenParams
+            {
+                colorCrossfade = Mathf.Lerp(startParams.colorCrossfade, tweenParams.colorCrossfade, alpha),
+                playerY =        Mathf.Lerp(startParams.playerY,        tweenParams.playerY, alpha),
+                cameraY =        Mathf.Lerp(startParams.cameraY,        tweenParams.cameraY, alpha),
+                cameraZ =        Mathf.Lerp(startParams.cameraZ,        tweenParams.cameraZ, alpha),
+                cameraPitch =    Mathf.Lerp(startParams.cameraPitch,    tweenParams.cameraPitch, alpha),
+            };
 
-            colorSwap.setCrossfade(Mathf.Lerp(from, to, 1.0f - currentCrossfade));
+            colorSwap.setCrossfade(currentParams.colorCrossfade);
         }
+
+        currentParams = tweenParams;
+        colorSwap.setCrossfade(tweenParams.colorCrossfade);
 
         tween = null;
     }
@@ -67,7 +105,16 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Player Hit Something, Restarting");
         moveSpeed = minSpeed;
-        playerZ = 0;
+
+        if (tween != null)
+        {
+            StopCoroutine(tween);
+        }
+
+        playerZ = 0.0f;
+        currentParams = insideTweenTarget;
+
+        colorSwap.setCrossfade(insideTweenTarget.colorCrossfade);
     }
 
     // Update is called once per frame
@@ -75,25 +122,25 @@ public class GameController : MonoBehaviour
     {
         playerX += Input.GetAxis("Horizontal") * Time.deltaTime * turnSpeed;
 
-        if (Input.GetKeyDown(KeyCode.S))
+
+        if (Input.GetKeyDown(KeyCode.S) && currentParams.isInside)
         {
-            isInside = false;
             if (tween != null)
             {
                 StopCoroutine(tween);
             }
 
-            StartCoroutine(TweenForCamera(0.0f, 1.0f));
+            tween = StartCoroutine(TweenToOutside(0.3f, outsideTweenTarget));
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && !currentParams.isInside)
         {
-            isInside = true;
             if (tween != null)
             {
                 StopCoroutine(tween);
             }
-            StartCoroutine(TweenForCamera(1.0f, 0.0f));
+
+            tween = StartCoroutine(TweenToOutside(0.3f, insideTweenTarget));
         }
 
         playerZ = playerZ + moveSpeed * Time.deltaTime;
@@ -102,33 +149,13 @@ public class GameController : MonoBehaviour
 			moveSpeed = maxSpeed;
 		}
 
-        var offsetDirection = (isInside) ? -1 : 1;
+        var playerY = radius + currentParams.playerY;
 
-        var offset = radius + (offsetDirection * shipOffset);
-
-        // TODO WT: Keep player offset from surface of hexagon.
-        player.transform.position = Vector3.Lerp(player.transform.position, new Vector3(Mathf.Sin(playerX) * offset, -Mathf.Cos(playerX) * offset, playerZ), Time.deltaTime * 20.0f);
-
-        // TODO WT: Lock rotation to snap to the edge of the hexagon.
+        player.transform.position = new Vector3(Mathf.Sin(playerX) * playerY, -Mathf.Cos(playerX) * playerY, playerZ);
         player.transform.rotation = Quaternion.AngleAxis(Mathf.Rad2Deg * playerX, Vector3.forward);
 
-        Vector3 newPos;
-        // !Not really too bothered about having the camera centererd when inside, this way we'll get some nice camera movement
-        if (isInside)
-        {
-            newPos = new Vector3(Mathf.Sin(playerX) * (offset + camYOffset * offsetDirection), -Mathf.Cos(playerX) * (offset + camYOffset * offsetDirection), player.transform.position.z - camXOffset);
+        camera.transform.localPosition = new Vector3(0.0f, currentParams.cameraY, currentParams.cameraZ);
 
-        }
-        else
-        {
-            newPos = new Vector3(Mathf.Sin(playerX) * (offset + camYOffsetOutside * offsetDirection), -Mathf.Cos(playerX) * (offset + camYOffsetOutside * offsetDirection), player.transform.position.z - camXOffset);
-        }
-
-        // if moving left, offset camera left a bit more, vice versa.
-
-        // TODO WT: Camera shake?
-
-        camera.transform.position = Vector3.Lerp(camera.transform.position, newPos, Time.deltaTime * 10.0f);
-        camera.transform.rotation = player.transform.rotation;
+        camera.transform.localRotation = Quaternion.AngleAxis(currentParams.cameraPitch, Vector3.right);
     }
 }
