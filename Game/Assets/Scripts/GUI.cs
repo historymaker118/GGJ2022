@@ -40,6 +40,7 @@ public class GUI : MonoBehaviour
 		}
 		if (playerDistance < currentDistance){
 			//We've reset
+			Bass.volume = 1f;
 			Kick.volume = 0;
 			Hihat.volume = 0;
 			Synth.volume = 0;
