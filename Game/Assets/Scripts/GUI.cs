@@ -173,7 +173,7 @@ public class GUI : MonoBehaviour
     private IEnumerator ShowText(){
 		milestoneText.enabled = true;
 		int counter = 0;
-		while (counter <= milestoneCooldown){
+		while (counter < milestoneCooldown){
 			counter ++;
 			yield return new WaitForSeconds(1);
 		}
